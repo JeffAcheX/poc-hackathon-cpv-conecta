@@ -59,7 +59,7 @@ export function HomeScreen() {
           </Section>
 
           <Section title="Para você">
-            <div className="-mx-1 flex gap-3 overflow-x-auto px-1 no-scrollbar sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0">
+            <div className="-mx-1 flex gap-3 overflow-x-auto px-1 no-scrollbar sm:mx-0 sm:grid sm:grid-cols-3 sm:overflow-visible sm:px-0">
               <MiniCard
                 icon={<IconCalendar className="h-5 w-5 text-brand" />}
                 title="Eventos"
@@ -75,20 +75,15 @@ export function HomeScreen() {
                 secondary
                 onClick={() => navigate('/amostras')}
               />
+              <MiniCard
+                icon={<IconArticle className="h-5 w-5 text-brand" />}
+                title="Conteúdos científicos"
+                desc="Acesse artigos, vídeos e podcasts da sua especialidade."
+                cta="Acessar"
+                secondary
+                onClick={() => navigate(`/conteudo/${conteudoSugerido.id}`)}
+              />
             </div>
-          </Section>
-
-          <Section title="Conteúdo sugerido para você">
-            {sugestao?.motivo && (
-              <div className="mb-2.5 flex items-start gap-2 rounded-xl bg-brand-bg px-3 py-2.5 text-[12.5px] leading-relaxed text-brand sm:text-[13px]">
-                <IconSpark className="mt-0.5 h-3.5 w-3.5 flex-shrink-0" />
-                <span>{sugestao.motivo}</span>
-              </div>
-            )}
-            <SuggestedContentCard
-              conteudo={conteudoSugerido}
-              onClick={() => navigate(`/conteudo/${conteudoSugerido.id}`)}
-            />
           </Section>
         </div>
 
@@ -114,54 +109,6 @@ export function HomeScreen() {
         </div>
       </div>
     </div>
-  );
-}
-
-function SuggestedContentCard({
-  conteudo,
-  onClick,
-}: {
-  conteudo: (typeof CONTEUDOS)[number];
-  onClick: () => void;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className="w-full overflow-hidden rounded-card bg-white text-left shadow-card transition hover:shadow-soft sm:grid sm:grid-cols-[minmax(160px,0.72fr)_1fr] lg:block xl:grid"
-    >
-      <div
-        className="relative h-32 overflow-hidden sm:h-full sm:min-h-[172px] lg:h-36 xl:h-full"
-        style={{ backgroundColor: conteudo.corThumb }}
-      >
-        {conteudo.imagem && (
-          <img
-            src={conteudo.imagem}
-            alt=""
-            className="h-full w-full object-cover"
-          />
-        )}
-        <span className="absolute left-3 top-3 flex items-center gap-1.5 rounded-pill bg-white/90 px-2.5 py-1 text-[11px] font-semibold text-ink">
-          <IconArticle className="h-3.5 w-3.5 text-brand" />
-          {conteudo.duracaoMin} min de leitura
-        </span>
-      </div>
-      <div className="p-4 sm:p-5">
-        <div className="text-[11.5px] font-semibold uppercase text-brand">
-          {conteudo.tipo} · {conteudo.especialidade}
-        </div>
-        <h4 className="mt-1 text-[15px] font-bold leading-snug sm:text-[17px]">
-          {conteudo.titulo}
-        </h4>
-        <p className="mt-1 text-[13px] leading-relaxed text-ink-sub sm:text-[13.5px]">
-          {conteudo.resumo}
-        </p>
-        <div className="mt-2.5 flex items-center gap-1.5 text-[12px] font-semibold text-brand">
-          <IconSpark className="h-3.5 w-3.5" />
-          Ganhe {conteudo.pontos} pts ao ler até o fim
-        </div>
-      </div>
-    </button>
   );
 }
 
