@@ -20,6 +20,7 @@ interface AppState {
   conteudosLidos: string[];
   streak: number;
   casoClinicoFeitoNestaSemana: boolean;
+  diasConcluidos: string[];
 }
 
 interface AppContextValue extends AppState {
@@ -32,6 +33,7 @@ interface AppContextValue extends AppState {
   registrarLeitura: (conteudoId: string, pontos: number) => boolean;
   registrarCasoClinicoSemanal: (pontos: number) => boolean;
   registrarAcao: (tipo: AcaoTipo, descricao: string, pontos: number) => void;
+  marcarDiaConcluido: (dataISO: string) => void;
 }
 
 const AppContext = createContext<AppContextValue | null>(null);
@@ -91,6 +93,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [casoClinicoSemanaData, setCasoClinicoSemanaData] = useState<string>(() =>
     load<string>(STORAGE_KEYS.casoClinicoSemana, ''),
   );
+  const [diasConcluidos, setDiasConcluidos] = useState<string[]>(() =>
+    load<string[]>(STORAGE_KEYS.diasConcluidos, []),
+  );
 
   // persistência
   useEffect(() => save(STORAGE_KEYS.medico, medico), [medico]);
@@ -106,6 +111,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
   useEffect(
     () => save(STORAGE_KEYS.casoClinicoSemana, casoClinicoSemanaData),
     [casoClinicoSemanaData],
+  );
+  useEffect(
+    () => save(STORAGE_KEYS.diasConcluidos, diasConcluidos),
+    [diasConcluidos],
   );
 
   const addEvento = useCallback(
@@ -175,6 +184,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
     [casoClinicoSemanaData, addEvento],
   );
 
+  const marcarDiaConcluido = useCallback((dataISO: string) => {
+    setDiasConcluidos((prev) => (prev.includes(dataISO) ? prev : [...prev, dataISO]));
+  }, []);
+
   const value = useMemo<AppContextValue>(
     () => ({
       medico,
@@ -185,6 +198,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       checkinHoje: checkinData === hojeISO(),
       streak: calcularStreak(eventos),
       casoClinicoFeitoNestaSemana: casoClinicoSemanaData === inicioDaSemanaISO(),
+      diasConcluidos,
       metaScore: META_SCORE,
       login,
       logout,
@@ -194,6 +208,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       registrarLeitura,
       registrarCasoClinicoSemanal,
       registrarAcao: addEvento,
+      marcarDiaConcluido,
     }),
     [
       medico,
@@ -203,6 +218,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       conteudosLidos,
       checkinData,
       casoClinicoSemanaData,
+      diasConcluidos,
       login,
       logout,
       fazerCheckin,
@@ -211,6 +227,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       registrarLeitura,
       registrarCasoClinicoSemanal,
       addEvento,
+      marcarDiaConcluido,
     ],
   );
 

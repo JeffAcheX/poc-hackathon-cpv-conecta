@@ -161,6 +161,13 @@ export const IconTrendUp = (p: IconProps) => (
   </svg>
 );
 
+export const IconLock = (p: IconProps) => (
+  <svg {...base(p)}>
+    <rect x="5" y="11" width="14" height="9" rx="2" />
+    <path d="M8 11V7a4 4 0 018 0v4" />
+  </svg>
+);
+
 export const IconChat = (p: IconProps) => (
   <svg {...base(p)}>
     <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />

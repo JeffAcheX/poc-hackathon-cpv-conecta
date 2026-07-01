@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import type { NavigateFunction } from 'react-router-dom';
 import type { Conteudo, Medico } from '@/types';
 import { AMOSTRAS } from '@/data/mockData';
 import { IconPlus } from '@/components/icons';
@@ -10,7 +9,7 @@ interface AgendaSegundaProps {
   medico: Medico | null;
   conteudoSugerido: Conteudo;
   evento: Conteudo;
-  onNavigate: NavigateFunction;
+  onNavigate: (path: string) => void;
   onSolicitarAmostras: (qtd: number) => void;
 }
 

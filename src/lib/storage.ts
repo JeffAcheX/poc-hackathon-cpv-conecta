@@ -38,4 +38,5 @@ export const STORAGE_KEYS = {
   quizFeitos: 'quiz-feitos',
   conteudosLidos: 'conteudos-lidos',
   amostrasSolicitadas: 'amostras-solicitadas',
+  diasConcluidos: 'dias-concluidos',
 } as const;
