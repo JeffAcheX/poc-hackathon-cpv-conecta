@@ -97,146 +97,144 @@ export function WeeklyAgendaCard({
 
   return (
     <div className="rounded-card bg-brand-bg p-4 sm:p-5">
-      <div className="flex items-start gap-3">
-        <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-white">
-          <IconCalendar className="h-6 w-6 text-brand" />
+      <div className="flex items-center gap-2.5">
+        <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-white">
+          <IconCalendar className="h-4 w-4 text-brand" />
         </div>
-        <div className="min-w-0 flex-1">
-          <div className="flex items-center justify-between gap-1">
-            {semana.map(({ dow, iso }) => {
-              const ehHojeTab = iso === hojeISO;
-              const futuroTab = iso > hojeISO;
-              const concluidoTab = diasConcluidos.includes(iso);
-              const expiradoTab = !ehHojeTab && !futuroTab && !concluidoTab;
-              const selecionado = dow === dowSelecionado;
+        <div className="flex min-w-0 flex-1 items-center justify-between gap-1">
+          {semana.map(({ dow, iso }) => {
+            const ehHojeTab = iso === hojeISO;
+            const futuroTab = iso > hojeISO;
+            const concluidoTab = diasConcluidos.includes(iso);
+            const expiradoTab = !ehHojeTab && !futuroTab && !concluidoTab;
+            const selecionado = dow === dowSelecionado;
 
-              return (
-                <button
-                  key={dow}
-                  type="button"
-                  onClick={() => setDowSelecionado(dow)}
-                  aria-current={selecionado}
-                  className={`flex flex-1 flex-col items-center gap-1 rounded-lg py-1.5 text-[11px] font-semibold transition ${
-                    selecionado
-                      ? 'bg-white text-brand shadow-sm'
-                      : 'text-ink-sub hover:bg-white/60'
-                  }`}
+            return (
+              <button
+                key={dow}
+                type="button"
+                onClick={() => setDowSelecionado(dow)}
+                aria-current={selecionado}
+                className={`flex flex-1 flex-col items-center gap-1 rounded-lg py-1.5 text-[11px] font-semibold transition ${
+                  selecionado
+                    ? 'bg-white text-brand shadow-sm'
+                    : 'text-ink-sub hover:bg-white/60'
+                }`}
+              >
+                <span
+                  className={
+                    concluidoTab
+                      ? 'text-brand'
+                      : futuroTab
+                        ? 'text-ink-sub/50'
+                        : expiradoTab
+                          ? 'text-ink-sub/40'
+                          : ehHojeTab
+                            ? 'text-brand'
+                            : 'text-ink-sub'
+                  }
                 >
-                  <span
-                    className={
-                      concluidoTab
-                        ? 'text-brand'
-                        : futuroTab
-                          ? 'text-ink-sub/50'
-                          : expiradoTab
-                            ? 'text-ink-sub/40'
-                            : ehHojeTab
-                              ? 'text-brand'
-                              : 'text-ink-sub'
-                    }
-                  >
-                    {concluidoTab ? (
-                      <IconCheck className="h-3.5 w-3.5" />
-                    ) : futuroTab ? (
-                      <IconLock className="h-3.5 w-3.5" />
-                    ) : (
-                      <span
-                        className={`block h-1.5 w-1.5 rounded-full ${
-                          ehHojeTab ? 'bg-brand' : 'bg-ink-sub/30'
-                        }`}
-                      />
-                    )}
-                  </span>
-                  {DIA_ABREV[dow]}
-                </button>
-              );
-            })}
-          </div>
-
-          <h3 className="mt-3 text-[14.5px] font-bold">{dia.tema}</h3>
-          <p className="mt-1 text-[12.5px] leading-relaxed text-ink-sub">
-            {dia.mensagem}
-          </p>
-
-          <div className="mt-3">
-            {ehFuturo && (
-              <div className="rounded-xl bg-white/60 p-3 text-[12.5px] leading-relaxed text-ink-sub">
-                <div className="mb-1 flex items-center gap-1.5 font-semibold text-ink">
-                  <IconLock className="h-3.5 w-3.5" />
-                  Disponível em breve
-                </div>
-                Essa atividade libera quando o dia chegar.
-              </div>
-            )}
-
-            {expirado && (
-              <div className="rounded-xl bg-white/60 p-3 text-[12.5px] leading-relaxed text-ink-sub">
-                Você não concluiu essa atividade a tempo — ela expirou.
-              </div>
-            )}
-
-            {!ehFuturo && !expirado && concluido && (
-              <div className="flex items-center gap-2 rounded-xl bg-white p-3 text-[12.5px] font-semibold text-ink">
-                <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-brand text-white">
-                  <IconCheck className="h-3.5 w-3.5" />
+                  {concluidoTab ? (
+                    <IconCheck className="h-3.5 w-3.5" />
+                  ) : futuroTab ? (
+                    <IconLock className="h-3.5 w-3.5" />
+                  ) : (
+                    <span
+                      className={`block h-1.5 w-1.5 rounded-full ${
+                        ehHojeTab ? 'bg-brand' : 'bg-ink-sub/30'
+                      }`}
+                    />
+                  )}
                 </span>
-                {ehHoje ? 'Você já concluiu essa atividade hoje.' : 'Atividade concluída.'}
-              </div>
-            )}
-
-            {ehHoje && !concluido && (
-              <>
-                {dowSelecionado === 0 && <AgendaDomingo onCheckin={handleCheckin} />}
-                {dowSelecionado === 1 && (
-                  <AgendaSegunda
-                    medico={medico}
-                    conteudoSugerido={conteudoSugerido}
-                    evento={evento}
-                    onNavigate={navegarEConcluir}
-                    onSolicitarAmostras={handleSolicitarAmostras}
-                  />
-                )}
-                {dowSelecionado === 2 && (
-                  <AgendaTerca
-                    conteudo={conteudoSugerido}
-                    onVer={() => navegarEConcluir(`/conteudo/${conteudoSugerido.id}`)}
-                  />
-                )}
-                {dowSelecionado === 3 && (
-                  <AgendaQuarta
-                    perguntas={perguntasSemanais}
-                    feito={casoClinicoFeitoNestaSemana}
-                    onEnviar={handleEnviarCasoClinico}
-                  />
-                )}
-                {dowSelecionado === 4 && (
-                  <AgendaQuinta onIniciar={() => navegarEConcluir('/quiz')} />
-                )}
-                {dowSelecionado === 5 && (
-                  <AgendaSexta
-                    onSeguir={() => {
-                      marcarDiaConcluido(hojeISO);
-                      showToast(
-                        'Você está acompanhando as novidades da Cuidados Pela Vida!',
-                      );
-                    }}
-                    onVerResumo={onOpenScoreSheet}
-                  />
-                )}
-                {dowSelecionado === 6 && (
-                  <AgendaSabado
-                    conteudo={conteudoSugerido}
-                    evento={evento}
-                    onVerConteudo={() =>
-                      navegarEConcluir(`/conteudo/${conteudoSugerido.id}`)
-                    }
-                    onVerEvento={() => navegarEConcluir(`/conteudo/${evento.id}`)}
-                  />
-                )}
-              </>
-            )}
-          </div>
+                {DIA_ABREV[dow]}
+              </button>
+            );
+          })}
         </div>
+      </div>
+
+      <h3 className="mt-3 text-[14.5px] font-bold">{dia.tema}</h3>
+      <p className="mt-1 text-[12.5px] leading-relaxed text-ink-sub">
+        {dia.mensagem}
+      </p>
+
+      <div className="mt-3">
+        {ehFuturo && (
+          <div className="rounded-xl bg-white/60 p-3 text-[12.5px] leading-relaxed text-ink-sub">
+            <div className="mb-1 flex items-center gap-1.5 font-semibold text-ink">
+              <IconLock className="h-3.5 w-3.5" />
+              Disponível em breve
+            </div>
+            Essa atividade libera quando o dia chegar.
+          </div>
+        )}
+
+        {expirado && (
+          <div className="rounded-xl bg-white/60 p-3 text-[12.5px] leading-relaxed text-ink-sub">
+            Você não concluiu essa atividade a tempo — ela expirou.
+          </div>
+        )}
+
+        {!ehFuturo && !expirado && concluido && (
+          <div className="flex items-center gap-2 rounded-xl bg-white p-3 text-[12.5px] font-semibold text-ink">
+            <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-brand text-white">
+              <IconCheck className="h-3.5 w-3.5" />
+            </span>
+            {ehHoje ? 'Você já concluiu essa atividade hoje.' : 'Atividade concluída.'}
+          </div>
+        )}
+
+        {ehHoje && !concluido && (
+          <>
+            {dowSelecionado === 0 && <AgendaDomingo onCheckin={handleCheckin} />}
+            {dowSelecionado === 1 && (
+              <AgendaSegunda
+                medico={medico}
+                conteudoSugerido={conteudoSugerido}
+                evento={evento}
+                onNavigate={navegarEConcluir}
+                onSolicitarAmostras={handleSolicitarAmostras}
+              />
+            )}
+            {dowSelecionado === 2 && (
+              <AgendaTerca
+                conteudo={conteudoSugerido}
+                onVer={() => navegarEConcluir(`/conteudo/${conteudoSugerido.id}`)}
+              />
+            )}
+            {dowSelecionado === 3 && (
+              <AgendaQuarta
+                perguntas={perguntasSemanais}
+                feito={casoClinicoFeitoNestaSemana}
+                onEnviar={handleEnviarCasoClinico}
+              />
+            )}
+            {dowSelecionado === 4 && (
+              <AgendaQuinta onIniciar={() => navegarEConcluir('/quiz')} />
+            )}
+            {dowSelecionado === 5 && (
+              <AgendaSexta
+                onSeguir={() => {
+                  marcarDiaConcluido(hojeISO);
+                  showToast(
+                    'Você está acompanhando as novidades da Cuidados Pela Vida!',
+                  );
+                }}
+                onVerResumo={onOpenScoreSheet}
+              />
+            )}
+            {dowSelecionado === 6 && (
+              <AgendaSabado
+                conteudo={conteudoSugerido}
+                evento={evento}
+                onVerConteudo={() =>
+                  navegarEConcluir(`/conteudo/${conteudoSugerido.id}`)
+                }
+                onVerEvento={() => navegarEConcluir(`/conteudo/${evento.id}`)}
+              />
+            )}
+          </>
+        )}
       </div>
     </div>
   );
