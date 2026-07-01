@@ -10,9 +10,9 @@
   "theme_color": "#5C3078",
   "icons": [
     {
-      "src": "logo-home-cell.png",
-      "sizes": "44x31",
-      "type": "image/png",
+      "src": "icone-coracao-cuidados-pela-vida.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
       "purpose": "any"
     }
   ]
