@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useApp } from '@/context/AppContext';
 import { useLayout } from '@/components/AppLayout';
 import { CONTEUDOS, RANKING } from '@/data/mockData';
@@ -15,6 +15,7 @@ export function HomeScreen() {
   const { medico, score } = useApp();
   const { openScoreSheet } = useLayout();
   const navigate = useNavigate();
+  const location = useLocation();
   const [sugestao, setSugestao] = useState<SugestaoIA | null>(null);
 
   useEffect(() => {
@@ -27,6 +28,14 @@ export function HomeScreen() {
     // busca uma vez ao montar (perfil estavel na sessao)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // rola até a seção de ranking quando acessado via link com #ranking (ex.: menu lateral)
+  useEffect(() => {
+    if (location.hash !== '#ranking') return;
+    const secoes = document.querySelectorAll('[data-section="ranking"]');
+    const visivel = [...secoes].find((el) => (el as HTMLElement).offsetParent !== null);
+    visivel?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, [location.hash]);
 
   const primeiroNome = medico?.nome.split(' ').slice(0, 2).join(' ') ?? 'Doutor(a)';
   const conteudoSugerido =
@@ -65,7 +74,7 @@ export function HomeScreen() {
                 title="Eventos"
                 desc="Confira os eventos abertos e participe."
                 cta="Participar"
-                onClick={() => navigate('/quiz')}
+                onClick={() => navigate('/conteudo/c-webinar-2026')}
               />
               <MiniCard
                 icon={<IconSpark className="h-5 w-5 text-brand" />}
@@ -115,7 +124,7 @@ export function HomeScreen() {
 function RankingCard() {
   const [tab, setTab] = useState<'esp' | 'reg'>('esp');
   return (
-    <div className="rounded-card bg-white p-[18px] shadow-card">
+    <div data-section="ranking" className="rounded-card bg-white p-[18px] shadow-card">
       <div className="section-title mb-3">Como você está</div>
       <div className="mb-3 grid grid-cols-2 gap-2">
         <TabBtn active={tab === 'esp'} onClick={() => setTab('esp')}>

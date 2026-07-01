@@ -44,14 +44,19 @@ const NAV_GROUPS_MEDICO: NavItem[][] = [
     },
   ],
   [
-    { icon: <IconCalendar />, label: 'Eventos', path: '/' },
+    {
+      icon: <IconCalendar />,
+      label: 'Eventos',
+      path: '/conteudo/c-webinar-2026',
+      activePath: '/conteudo/c-webinar-2026',
+    },
     {
       icon: <IconCase />,
       label: 'Caso clínico da semana',
       path: '/quiz',
       activePath: '/quiz',
     },
-    { icon: <IconTrophy />, label: 'Ranking', path: '/' },
+    { icon: <IconTrophy />, label: 'Ranking', path: '/#ranking' },
   ],
   [{ icon: <IconHelp />, label: 'Ajuda' }],
 ];
