@@ -1,0 +1,19 @@
+{
+  "name": "Cuidados Pela Vida — Visita Médica Digital",
+  "short_name": "Cuidados Pela Vida",
+  "description": "Portal do Médico · Cuidados Pela Vida",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#2B1638",
+  "theme_color": "#5C3078",
+  "icons": [
+    {
+      "src": "logo-home-cell.png",
+      "sizes": "44x31",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
