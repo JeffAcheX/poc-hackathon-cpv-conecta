@@ -1,4 +1,4 @@
-import cpvLogoUrl from '../../logo-cuidados-pela-vida.svg';
+import cpvLogoUrl from '@/assets/brand/logo-cuidados-pela-vida.svg';
 
 interface BrandLogoProps {
   className?: string;
