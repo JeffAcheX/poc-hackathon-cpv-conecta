@@ -1,0 +1,69 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: #e7e0ec;
+  -webkit-font-smoothing: antialiased;
+  color: #241e29;
+  font-family: 'Hanken Grotesk', system-ui, 'Segoe UI', sans-serif;
+}
+
+/* títulos com a fonte display de marca */
+h1,
+h2,
+h3,
+.font-display {
+  font-family: 'Bricolage Grotesque', 'Hanken Grotesk', sans-serif;
+  letter-spacing: 0;
+}
+
+/* esconde scrollbar dentro do "celular" */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-pill font-semibold transition active:scale-[0.98];
+  }
+  .btn-primary {
+    @apply bg-brand text-white hover:bg-brand/90;
+  }
+  .btn-secondary {
+    @apply border border-line bg-white text-brand hover:bg-brand-bg/40;
+  }
+  .btn-ghost {
+    @apply bg-transparent text-brand hover:bg-brand-bg/40;
+  }
+  .btn-block {
+    @apply w-full;
+  }
+  .btn-sm {
+    @apply px-4 py-2 text-[13px];
+  }
+  .btn-md {
+    @apply px-5 py-3 text-sm;
+  }
+  .card {
+    @apply rounded-card bg-white p-[18px] shadow-card;
+  }
+  .section-title {
+    @apply text-[15px] font-bold text-ink;
+  }
+}
