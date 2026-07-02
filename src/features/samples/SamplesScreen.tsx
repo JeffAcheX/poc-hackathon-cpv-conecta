@@ -59,7 +59,7 @@ export function SamplesScreen() {
           type="button"
           onClick={() => navigate('/')}
           aria-label="Voltar"
-          className="flex h-9 w-9 items-center justify-center rounded-full bg-white shadow-card"
+          className="flex h-9 w-9 items-center justify-center rounded-full bg-white"
         >
           <IconBack className="h-5 w-5 text-ink" />
         </button>

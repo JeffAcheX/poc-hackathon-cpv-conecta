@@ -120,7 +120,7 @@ export function WeeklyAgendaCard({
                 aria-current={selecionado}
                 className={`flex flex-1 flex-col items-center gap-1 rounded-lg py-1.5 text-[11px] font-semibold transition ${
                   selecionado
-                    ? 'bg-white text-brand shadow-sm'
+                    ? 'bg-white text-brand'
                     : 'text-ink-sub hover:bg-white/60'
                 }`}
               >

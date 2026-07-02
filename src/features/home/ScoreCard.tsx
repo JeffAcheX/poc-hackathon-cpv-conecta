@@ -12,7 +12,7 @@ export function ScoreCard({ onOpen }: { onOpen: () => void }) {
   return (
     <button
       onClick={onOpen}
-      className="w-full rounded-card bg-brand p-5 text-left text-white shadow-soft transition active:scale-[0.99] sm:p-6 lg:p-5 xl:p-6"
+      className="w-full rounded-card bg-brand p-5 text-left text-white transition active:scale-[0.99] sm:p-6 lg:p-5 xl:p-6"
     >
       <div className="flex items-start justify-between">
         <div>
