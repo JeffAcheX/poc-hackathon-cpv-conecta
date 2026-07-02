@@ -1,6 +1,7 @@
 import type {
   ChatMessage,
   Conteudo,
+  Especialidade,
   Medico,
   RespostaAssistente,
   SugestaoIA,
@@ -71,6 +72,7 @@ export async function responderPergunta(
   const relacionados = relacionar(medico, pergunta);
 
   if (!iaAtiva()) {
+    await delayPensando();
     return { ...respostaMock(medico, pergunta), ...relacionados, fonte: 'mock' };
   }
   try {
@@ -80,6 +82,7 @@ export async function responderPergunta(
     return { resposta, ...rel, fonte: 'ia' };
   } catch (err) {
     console.warn('[IA] Falha no assistente, usando fallback mock:', err);
+    await delayPensando();
     return { ...respostaMock(medico, pergunta), ...relacionados, fonte: 'mock' };
   }
 }
@@ -138,28 +141,130 @@ async function respostaClaude(
   return text;
 }
 
+// aguarda um tempo aleatório, simulando o "pensar" de uma IA de verdade
+function aguardar(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+export function delayPensando(): Promise<void> {
+  return aguardar(1500 + Math.random() * 1300);
+}
+
+// escolha pseudo-aleatória, mas estável para a mesma pergunta (evita repetir
+// sempre a mesma variação para perguntas diferentes do mesmo tópico)
+function escolher<T>(lista: T[], semente: string): T {
+  let h = 0;
+  for (const c of semente) h = (h * 31 + c.charCodeAt(0)) % 997;
+  return lista[h % lista.length];
+}
+
+type GeradorResposta = (nome: string) => string;
+
+const RESPOSTAS_MEDICAMENTO: Record<string, GeradorResposta> = {
+  cardiomix: (nome) =>
+    `${nome}, Cardiomix é indicado para hipertensão leve a moderada, especialmente quando o paciente ainda não está controlado com medidas não farmacológicas. O perfil de tolerabilidade costuma favorecer a adesão a longo prazo.`,
+  vasoprim: (nome) =>
+    `Para quadros de insuficiência vascular periférica, ${nome}, Vasoprim costuma ser uma boa opção — vale reforçar com o paciente que a resposta clínica é gradual, geralmente perceptível a partir de algumas semanas de uso contínuo.`,
+  'cardiomix plus': (nome) =>
+    `Cardiomix Plus entra bem quando o paciente já usa um anti-hipertensivo e precisa de controle adicional, ${nome}. Por ser uma combinação, ajuda a simplificar o esquema posológico em vez de somar mais um comprimido separado.`,
+  glicoreg: (nome) =>
+    `${nome}, Glicoreg é indicado para controle glicêmico em diabetes tipo 2, com bom perfil para uso combinado. Vale reavaliar a resposta em 8 a 12 semanas antes de intensificar o tratamento.`,
+  vitaplus: (nome) =>
+    `Vitaplus funciona como suporte nutricional complementar, ${nome} — não substitui o tratamento principal, mas pode ser útil em pacientes com maior demanda nutricional ou baixa ingestão alimentar.`,
+};
+
+const RESPOSTAS_ADESAO: GeradorResposta[] = [
+  (nome) =>
+    `Na minha experiência com outros médicos da plataforma, ${nome}, simplificar o esquema posológico é o que mais move o ponteiro na adesão — menos comprimidos por dia costuma valer mais do que qualquer orientação verbal.`,
+  (nome) =>
+    `${nome}, além de simplificar a posologia, discutir custo abertamente com o paciente ajuda bastante: parte importante do abandono de tratamento crônico vem de dificuldade financeira não verbalizada na consulta.`,
+];
+
+const RESPOSTAS_GENERICO: GeradorResposta[] = [
+  (nome) =>
+    `${nome}, o genérico tem o mesmo princípio ativo e bioequivalência comprovada pela Anvisa — é a opção de menor custo. O similar também é equivalente, mas com marca própria. O de marca é o produto de referência, com o histórico de estudos clínicos originais.`,
+  (nome) =>
+    `Na prática, ${nome}, a escolha entre genérico, similar e de marca costuma pesar mais no bolso do paciente do que na eficácia — os três têm o mesmo princípio ativo. Explicar essa diferença ajuda a manter a continuidade do tratamento.`,
+];
+
+const RESPOSTAS_GERAL: Record<Especialidade | 'Geral', GeradorResposta[]> = {
+  Cardiologia: [
+    (nome) =>
+      `Boa pergunta, ${nome}. Em cardiologia, a decisão costuma passar por estratificação de risco cardiovascular antes de qualquer ajuste terapêutico — vale sempre revisar as comorbidades associadas.`,
+    (nome) =>
+      `${nome}, de forma geral vale considerar o perfil de risco individual do paciente e as diretrizes vigentes antes de definir a conduta — cada caso pode pedir uma abordagem diferente.`,
+  ],
+  Endocrinologia: [
+    (nome) =>
+      `${nome}, em endocrinologia a individualização da meta terapêutica costuma ser o ponto-chave — idade, tempo de doença e comorbidades mudam bastante a conduta recomendada.`,
+    (nome) =>
+      `Boa pergunta, ${nome}. Vale sempre reavaliar a resposta terapêutica em algumas semanas antes de intensificar o tratamento, considerando o perfil metabólico do paciente.`,
+  ],
+  'Clínica Geral': [
+    (nome) =>
+      `${nome}, na clínica geral o mais importante costuma ser olhar o paciente de forma integral — a resposta a um tratamento raramente depende só da prescrição em si.`,
+    (nome) =>
+      `Boa pergunta, ${nome}. Vale sempre considerar o contexto clínico completo do paciente e as diretrizes vigentes antes de definir a conduta.`,
+  ],
+  Pediatria: [
+    (nome) =>
+      `${nome}, em pediatria o ajuste por peso e a orientação clara aos responsáveis costumam ser decisivos para o sucesso do tratamento.`,
+    (nome) =>
+      `Boa pergunta, ${nome}. Vale sempre revisar a faixa etária e o peso do paciente antes de definir dose e conduta.`,
+  ],
+  Ortopedia: [
+    (nome) =>
+      `${nome}, em ortopedia vale sempre equilibrar controle da dor e funcionalidade — a conduta muda bastante conforme o estágio da lesão ou condição.`,
+    (nome) =>
+      `Boa pergunta, ${nome}. De forma geral, considerar o quadro funcional do paciente ajuda a guiar a escolha entre conduta conservadora e mais intervencionista.`,
+  ],
+  Geral: [
+    (nome) =>
+      `Boa pergunta, ${nome}. De forma geral, a conduta deve considerar o quadro individual do paciente e as diretrizes vigentes.`,
+    (nome) =>
+      `${nome}, vale sempre avaliar o contexto clínico completo antes de definir a conduta mais adequada para esse caso.`,
+  ],
+};
+
 function respostaMock(
   medico: Medico,
   pergunta: string,
 ): { resposta: string } {
   const nome = extrairPrimeiroNome(medico.nome);
+  const termos = normalizar(pergunta);
+  const textoNorm = ` ${termos.join(' ')} `;
+
+  const amostraCitada = AMOSTRAS.find((a) =>
+    textoNorm.includes(` ${normalizar(a.nome).join(' ')} `),
+  );
+  const geradorMedicamento = amostraCitada
+    ? RESPOSTAS_MEDICAMENTO[amostraCitada.nome.toLowerCase()]
+    : undefined;
+
+  let nucleo: string;
+  if (geradorMedicamento) {
+    nucleo = geradorMedicamento(nome);
+  } else if (termos.some((t) => t.startsWith('ades') || t.startsWith('adere'))) {
+    nucleo = escolher(RESPOSTAS_ADESAO, pergunta)(nome);
+  } else if (termos.some((t) => ['generico', 'similar', 'marca'].includes(t))) {
+    nucleo = escolher(RESPOSTAS_GENERICO, pergunta)(nome);
+  } else {
+    const geral = RESPOSTAS_GERAL[medico.especialidade] ?? RESPOSTAS_GERAL.Geral;
+    nucleo = escolher(geral, pergunta)(nome);
+  }
+
   const rel = relacionar(medico, pergunta);
   const conteudo = CONTEUDOS.find((c) => c.id === rel.conteudosRelacionados[0]);
   const amostraPrincipal = rel.amostrasRelacionadas[0];
   const refConteudo = conteudo
     ? ` Um ponto de partida é o material "${conteudo.titulo}".`
     : '';
-  const refAmostra = amostraPrincipal
-    ? ` Deixei disponível a amostra de ${amostraPrincipal} relacionada ao tema.`
-    : '';
-  return {
-    resposta:
-      `Boa pergunta, ${nome}. De forma geral, a conduta deve considerar o quadro ` +
-      `individual do paciente e as diretrizes vigentes para ${medico.especialidade.toLowerCase()}.` +
-      refConteudo +
-      refAmostra +
-      ` (Resposta de demonstração — ative a IA com uma chave da Anthropic para respostas clínicas completas.)`,
-  };
+  const refAmostra =
+    amostraPrincipal && amostraPrincipal !== amostraCitada?.nome
+      ? ` Deixei disponível a amostra de ${amostraPrincipal} relacionada ao tema.`
+      : '';
+
+  return { resposta: nucleo + refConteudo + refAmostra };
 }
 
 // Relaciona conteúdos/amostras ao texto: prioriza medicamento citado pelo nome

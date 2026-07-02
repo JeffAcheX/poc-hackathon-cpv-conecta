@@ -13,6 +13,12 @@ import { AMOSTRAS, CONTEUDOS } from '@/data/mockData';
 import type { ChatMessage } from '@/types';
 import { IconArticle, IconBack, IconSample, IconSend, IconSpark } from '@/components/icons';
 
+const ESTAGIOS_PENSANDO = [
+  'Analisando sua pergunta…',
+  'Consultando base científica…',
+  'Finalizando resposta…',
+];
+
 export function AssistantScreen() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -23,8 +29,21 @@ export function AssistantScreen() {
   const [mensagens, setMensagens] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
   const [carregando, setCarregando] = useState(false);
+  const [estagio, setEstagio] = useState(0);
   const fimRef = useRef<HTMLDivElement>(null);
   const iniciou = useRef(false);
+
+  // alterna a mensagem de "pensando" enquanto aguarda a resposta
+  useEffect(() => {
+    if (!carregando) {
+      setEstagio(0);
+      return;
+    }
+    const id = setInterval(() => {
+      setEstagio((e) => (e + 1) % ESTAGIOS_PENSANDO.length);
+    }, 900);
+    return () => clearInterval(id);
+  }, [carregando]);
 
   // pergunta pré-preenchida vinda da Home (uma única vez, mesmo no StrictMode)
   useEffect(() => {
@@ -142,7 +161,7 @@ export function AssistantScreen() {
             <span className="flex gap-1">
               <Dot /> <Dot d={150} /> <Dot d={300} />
             </span>
-            O Representante Digital está pensando…
+            {ESTAGIOS_PENSANDO[estagio]}
           </div>
         )}
         <div ref={fimRef} />
