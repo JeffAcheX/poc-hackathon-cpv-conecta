@@ -6,6 +6,7 @@ import { CONTEUDOS, RANKING } from '@/data/mockData';
 import { gerarSugestao } from '@/lib/ai';
 import type { SugestaoIA } from '@/types';
 import { ScoreCard } from './ScoreCard';
+import { VisitaGuiadaHero } from './VisitaGuiadaHero';
 import { AssistantHero } from './AssistantHero';
 import { DailyActions } from './DailyActions';
 import { WeeklyAgendaCard } from './WeeklyAgendaCard';
@@ -48,6 +49,8 @@ export function HomeScreen() {
 
       <div className="mt-5 grid gap-5 lg:grid-cols-[minmax(0,1fr)_360px] xl:grid-cols-[minmax(0,1fr)_400px]">
         <div className="min-w-0 space-y-5">
+          <VisitaGuiadaHero />
+
           <AssistantHero />
 
           <div className="lg:hidden">

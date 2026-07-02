@@ -9,6 +9,7 @@ import { AssistantScreen } from '@/features/assistant/AssistantScreen';
 import { ContentDetail } from '@/features/content/ContentDetail';
 import { SamplesScreen } from '@/features/samples/SamplesScreen';
 import { QuizScreen } from '@/features/quiz/QuizScreen';
+import { VisitaGuiadaScreen } from '@/features/visita/VisitaGuiadaScreen';
 
 export default function App() {
   return (
@@ -28,6 +29,7 @@ export default function App() {
             <Route path="/conteudo/:id" element={<ContentDetail />} />
             <Route path="/amostras" element={<SamplesScreen />} />
             <Route path="/quiz" element={<QuizScreen />} />
+            <Route path="/visita" element={<VisitaGuiadaScreen />} />
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
