@@ -82,7 +82,7 @@ export function DesktopSidebar() {
   const navigate = useNavigate();
 
   return (
-    <aside className="hidden w-[292px] shrink-0 flex-col border-r border-line bg-white lg:flex">
+    <aside className="hidden w-[292px] shrink-0 flex-col border-r border-white/60 bg-white/75 backdrop-blur-xl lg:flex">
       <div className="border-b border-line px-6 py-6">
         <div className="flex min-w-0 flex-col items-start gap-1.5">
           <BrandLogo className="h-[26px]" />

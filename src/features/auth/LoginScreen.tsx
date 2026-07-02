@@ -63,28 +63,43 @@ export function LoginScreen() {
 
   return (
     <AppShell>
-      <div className="no-scrollbar flex-1 overflow-y-auto bg-brand-deep">
-        <div className="mx-auto grid min-h-full w-full max-w-6xl items-center gap-8 px-6 py-10 text-white sm:px-8 lg:grid-cols-[minmax(0,1fr)_460px] lg:px-10">
+      <div className="aurora-deep no-scrollbar relative flex-1 overflow-y-auto">
+        {/* auroras e orbes do cenario onirico do login */}
+        <div className="orb -left-20 top-10 h-80 w-80 animate-drift bg-brand-soft/45" />
+        <div
+          className="orb bottom-0 right-[30%] h-96 w-96 animate-drift bg-brand/60"
+          style={{ animationDelay: '-7s' }}
+        />
+        <div className="orb right-[-8%] top-[20%] h-64 w-64 animate-pulse-glow bg-brand-bg/15" />
+
+        <div className="relative mx-auto grid min-h-full w-full max-w-6xl items-center gap-8 px-6 py-10 text-white sm:px-8 lg:grid-cols-[minmax(0,1fr)_460px] lg:px-10">
           <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
-            <div className="mb-5 w-fit max-w-full rounded-2xl bg-white px-4 py-3 shadow-soft">
+            <div className="mb-5 w-fit max-w-full rounded-2xl bg-white px-4 py-3 shadow-glow-sm">
               <BrandLogo className="h-[28px] sm:h-[31px]" />
             </div>
-            <h1 className="text-[26px] font-extrabold sm:text-[34px]">
-              Visita médica digital
+            <h1 className="text-aurora text-[28px] font-extrabold leading-tight sm:text-[38px]">
+              A visita médica,
+              <br />
+              reimaginada.
             </h1>
-            <p className="mt-2 max-w-md text-sm leading-relaxed text-brand-soft sm:text-base">
-              Portal do Médico · Cuidados Pela Vida
+            <p className="mt-3 max-w-md text-sm leading-relaxed text-white/70 sm:text-base">
+              Portal do Médico · Cuidados Pela Vida — ciência, conteúdo e
+              amostras fluindo até você, quando você precisar.
             </p>
-            <img
-              src={visitDigitalImg}
-              alt=""
-              className="mt-8 hidden w-full max-w-md rounded-[24px] shadow-soft lg:block"
-            />
+            <div className="relative mt-10 hidden w-full max-w-md lg:block">
+              {/* halo de luz emanando de dentro da imagem */}
+              <div className="absolute inset-6 animate-pulse-glow rounded-full bg-brand-soft/50 blur-3xl" />
+              <img
+                src={visitDigitalImg}
+                alt=""
+                className="relative w-full animate-float rounded-[24px] shadow-glow"
+              />
+            </div>
           </div>
 
           <form
             onSubmit={handleSubmit}
-            className="w-full rounded-[24px] bg-white p-5 text-ink shadow-xl sm:p-6"
+            className="w-full rounded-[24px] border border-white/50 bg-white/90 p-5 text-ink shadow-glow backdrop-blur-xl sm:p-6"
           >
             <h2 className="mb-1 text-lg font-bold">Acesse sua conta</h2>
             <p className="mb-4 text-[13px] text-ink-sub">

@@ -41,8 +41,9 @@ export function RepDashboardScreen() {
 
   return (
     <div className="mx-auto w-full max-w-7xl px-4 pb-8 pt-5 sm:px-6 lg:px-8 lg:py-8">
-      <div className="overflow-hidden rounded-card bg-brand-deep text-white shadow-soft">
-        <div className="flex flex-col gap-5 p-5 sm:flex-row sm:items-center sm:p-6">
+      <div className="aurora-deep relative overflow-hidden rounded-card text-white shadow-glow-sm">
+        <div className="orb -right-16 -top-20 h-56 w-56 animate-pulse-glow bg-brand-soft/50" />
+        <div className="relative flex flex-col gap-5 p-5 sm:flex-row sm:items-center sm:p-6">
           <div className="min-w-0 flex-1">
             <div className="text-[12px] font-semibold uppercase tracking-wide text-brand-soft">
               Carteira de médicos
@@ -58,7 +59,7 @@ export function RepDashboardScreen() {
           <img
             src={medicalDashboardImg}
             alt=""
-            className="h-32 w-full rounded-2xl object-cover sm:h-28 sm:w-48"
+            className="h-32 w-full animate-float rounded-2xl object-cover shadow-glow-sm sm:h-28 sm:w-48"
           />
         </div>
       </div>
@@ -113,7 +114,7 @@ function KpiCard({
   hint: string;
 }) {
   return (
-    <div className="rounded-card bg-white p-4 shadow-card sm:p-5">
+    <div className="card p-4 sm:p-5">
       <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-bg text-brand">
         {icon}
       </div>
@@ -136,7 +137,7 @@ function LeadCard({
   onPreparar: () => void;
 }) {
   return (
-    <div className="rounded-card bg-white p-4 shadow-card sm:p-5">
+    <div className="card p-4 sm:p-5">
       <div className="flex flex-wrap items-start justify-between gap-2">
         <div className="min-w-0">
           <h3 className="text-[15px] font-bold">{lead.nome}</h3>

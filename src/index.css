@@ -43,7 +43,12 @@ h3,
     @apply inline-flex items-center justify-center gap-2 rounded-pill font-semibold transition active:scale-[0.98];
   }
   .btn-primary {
-    @apply bg-brand text-white hover:bg-brand/90;
+    @apply text-white shadow-glow-sm hover:brightness-110;
+    background-image: linear-gradient(120deg, #5c3078, #7a44a0 55%, #8c5fa8);
+    background-size: 180% 180%;
+  }
+  .btn-primary:hover {
+    animation: aurora 4s ease-in-out infinite;
   }
   .btn-secondary {
     @apply border border-line bg-white text-brand hover:bg-brand-bg/40;
@@ -61,9 +66,55 @@ h3,
     @apply px-5 py-3 text-sm;
   }
   .card {
-    @apply rounded-card bg-white p-[18px] shadow-card;
+    @apply rounded-card border border-white/60 bg-white/85 p-[18px] shadow-card backdrop-blur-md transition-shadow duration-300 hover:shadow-lift;
   }
   .section-title {
     @apply text-[15px] font-bold text-ink;
+  }
+
+  /* superfície "vidro" sobre fundos escuros */
+  .glass-dark {
+    @apply border border-white/15 bg-white/10 backdrop-blur-xl;
+  }
+
+  /* fundo claro com névoa lavanda — versão diurna do sonho */
+  .aurora-light {
+    background-color: #f7f4f8;
+    background-image:
+      radial-gradient(60% 40% at 85% 0%, rgba(140, 95, 168, 0.12) 0%, transparent 70%),
+      radial-gradient(50% 36% at 0% 30%, rgba(242, 234, 246, 0.9) 0%, transparent 70%),
+      radial-gradient(46% 38% at 70% 100%, rgba(92, 48, 120, 0.08) 0%, transparent 72%);
+  }
+
+  /* fundo etéreo profundo: camadas de auroras roxas em movimento lento */
+  .aurora-deep {
+    background-color: #2b1638;
+    background-image:
+      radial-gradient(52% 44% at 18% 12%, rgba(140, 95, 168, 0.5) 0%, transparent 68%),
+      radial-gradient(46% 40% at 84% 20%, rgba(92, 48, 120, 0.75) 0%, transparent 70%),
+      radial-gradient(60% 52% at 68% 88%, rgba(140, 95, 168, 0.34) 0%, transparent 72%),
+      radial-gradient(38% 34% at 8% 78%, rgba(242, 234, 246, 0.1) 0%, transparent 70%);
+  }
+
+  /* orbe difuso decorativo — usar dentro de containers overflow-hidden */
+  .orb {
+    @apply pointer-events-none absolute rounded-full blur-3xl;
+  }
+
+  /* texto com gradiente de aurora */
+  .text-aurora {
+    background-image: linear-gradient(100deg, #f2eaf6 10%, #c9a6e0 45%, #8c5fa8 90%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-float,
+  .animate-drift,
+  .animate-aurora,
+  .animate-pulse-glow {
+    animation: none !important;
   }
 }

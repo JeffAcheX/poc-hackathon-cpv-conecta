@@ -124,7 +124,7 @@ export function HomeScreen() {
 function RankingCard() {
   const [tab, setTab] = useState<'esp' | 'reg'>('esp');
   return (
-    <div data-section="ranking" className="rounded-card bg-white p-[18px] shadow-card">
+    <div data-section="ranking" className="card">
       <div className="section-title mb-3">Como você está</div>
       <div className="mb-3 grid grid-cols-2 gap-2">
         <TabBtn active={tab === 'esp'} onClick={() => setTab('esp')}>
@@ -157,7 +157,7 @@ function RankingCard() {
 function FeaturedEventCard({ onOpen }: { onOpen: () => void }) {
   const evento = CONTEUDOS.find((c) => c.id === 'c-webinar-2026') ?? CONTEUDOS[0];
   return (
-    <div className="overflow-hidden rounded-card bg-white shadow-card">
+    <div className="card overflow-hidden p-0">
       <div
         className="h-28 overflow-hidden sm:h-32"
         style={{ backgroundColor: evento.corThumb }}
@@ -217,7 +217,7 @@ function MiniCard({
   secondary?: boolean;
 }) {
   return (
-    <div className="flex w-[190px] flex-shrink-0 flex-col rounded-card bg-white p-4 shadow-card sm:w-full">
+    <div className="card flex w-[190px] flex-shrink-0 flex-col p-4 sm:w-full">
       <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-xl bg-brand-bg">
         {icon}
       </div>
