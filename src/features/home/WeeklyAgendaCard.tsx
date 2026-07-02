@@ -60,6 +60,9 @@ export function WeeklyAgendaCard({
   const ehFuturo = diaInfo.iso > hojeISO;
   const concluido = diasConcluidos.includes(diaInfo.iso);
   const expirado = !ehHoje && !ehFuturo && !concluido;
+  // quinta-feira já mostra seu próprio título/descrição dentro do card (AgendaQuinta)
+  const cabecalhoDuplicado =
+    ehHoje && !concluido && dowSelecionado === 4;
 
   const conteudoSugerido =
     CONTEUDOS.find((c) => c.id === conteudoSugeridoId) ?? CONTEUDOS[0];
@@ -153,10 +156,14 @@ export function WeeklyAgendaCard({
         </div>
       </div>
 
-      <h3 className="mt-3 text-[14.5px] font-bold">{dia.tema}</h3>
-      <p className="mt-1 text-[12.5px] leading-relaxed text-ink-sub">
-        {dia.mensagem}
-      </p>
+      {!cabecalhoDuplicado && (
+        <>
+          <h3 className="mt-3 text-[14.5px] font-bold">{dia.tema}</h3>
+          <p className="mt-1 text-[12.5px] leading-relaxed text-ink-sub">
+            {dia.mensagem}
+          </p>
+        </>
+      )}
 
       <div className="mt-3">
         {ehFuturo && (
