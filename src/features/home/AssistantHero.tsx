@@ -14,7 +14,7 @@ export function AssistantHero() {
   }
 
   return (
-    <div className="aurora-deep relative overflow-hidden rounded-card p-5 text-white shadow-glow-sm sm:p-6">
+    <div className="aurora-deep relative overflow-clip rounded-card p-5 text-white shadow-glow-sm sm:p-6">
       {/* luz que respira dentro do card, como se a tela emanasse o brilho */}
       <div className="orb -right-16 -top-20 h-56 w-56 animate-pulse-glow bg-brand-soft/50" />
       <div

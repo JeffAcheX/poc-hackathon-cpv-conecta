@@ -5,6 +5,7 @@ import { ESPECIALIDADES, UFS } from '@/data/mockData';
 import type { Especialidade, Papel } from '@/types';
 import { AppShell } from '@/components/AppShell';
 import { BrandLogo } from '@/components/BrandLogo';
+import { Particles } from '@/components/Particles';
 import visitDigitalImg from '@/assets/illustrations/visit-digital.png';
 
 export function LoginScreen() {
@@ -71,6 +72,7 @@ export function LoginScreen() {
           style={{ animationDelay: '-7s' }}
         />
         <div className="orb right-[-8%] top-[20%] h-64 w-64 animate-pulse-glow bg-brand-bg/15" />
+        <Particles />
 
         <div className="relative mx-auto grid min-h-full w-full max-w-6xl items-center gap-8 px-6 py-10 text-white sm:px-8 lg:grid-cols-[minmax(0,1fr)_460px] lg:px-10">
           <div className="flex flex-col items-center text-center lg:items-start lg:text-left">

@@ -108,13 +108,94 @@ h3,
     background-clip: text;
     color: transparent;
   }
+
+  /* partícula de luz que sobe lentamente (usar dentro de container overflow-hidden) */
+  .particle {
+    @apply pointer-events-none absolute bottom-[-4%] rounded-full bg-white;
+    opacity: 0;
+    animation: rise linear infinite;
+  }
+
+  /* entrada etérea de página: surge do desfoque como um sonho ganhando nitidez */
+  .animate-page-in {
+    animation: page-in 0.5s ease both;
+  }
+}
+
+@keyframes aurora {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes rise {
+  0% {
+    transform: translateY(0) translateX(0);
+    opacity: 0;
+  }
+  12% {
+    opacity: var(--p-op, 0.6);
+  }
+  85% {
+    opacity: var(--p-op, 0.6);
+  }
+  100% {
+    transform: translateY(-92vh) translateX(var(--p-drift, 24px));
+    opacity: 0;
+  }
+}
+
+@keyframes page-in {
+  0% {
+    opacity: 0;
+    transform: translateY(14px);
+    filter: blur(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+/* ── Modo apresentação: o sonho fica mais vivo para o pitch ───────────── */
+body.presentation .orb {
+  animation-duration: 9s;
+}
+body.presentation .card {
+  animation: float 8s ease-in-out infinite;
+}
+body.presentation .card:nth-child(2n) {
+  animation-delay: -2.6s;
+}
+body.presentation .card:nth-child(3n) {
+  animation-delay: -5.2s;
+}
+body.presentation .text-aurora {
+  background-size: 200% 200%;
+  animation: aurora 6s ease-in-out infinite;
+}
+body.presentation .animate-float {
+  animation-duration: 4s;
+}
+body.presentation .btn-primary {
+  animation: aurora 4s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .animate-float,
   .animate-drift,
   .animate-aurora,
-  .animate-pulse-glow {
+  .animate-pulse-glow,
+  .animate-page-in,
+  .particle,
+  body.presentation .card,
+  body.presentation .text-aurora,
+  body.presentation .btn-primary {
     animation: none !important;
   }
 }

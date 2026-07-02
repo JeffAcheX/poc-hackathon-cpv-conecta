@@ -41,7 +41,7 @@ export function RepDashboardScreen() {
 
   return (
     <div className="mx-auto w-full max-w-7xl px-4 pb-8 pt-5 sm:px-6 lg:px-8 lg:py-8">
-      <div className="aurora-deep relative overflow-hidden rounded-card text-white shadow-glow-sm">
+      <div className="aurora-deep relative overflow-clip rounded-card text-white shadow-glow-sm">
         <div className="orb -right-16 -top-20 h-56 w-56 animate-pulse-glow bg-brand-soft/50" />
         <div className="relative flex flex-col gap-5 p-5 sm:flex-row sm:items-center sm:p-6">
           <div className="min-w-0 flex-1">

@@ -12,7 +12,7 @@ export function ScoreCard({ onOpen }: { onOpen: () => void }) {
   return (
     <button
       onClick={onOpen}
-      className="relative w-full overflow-hidden rounded-card p-5 text-left text-white shadow-glow-sm transition hover:shadow-glow active:scale-[0.99] sm:p-6 lg:p-5 xl:p-6"
+      className="relative w-full overflow-clip rounded-card p-5 text-left text-white shadow-glow-sm transition hover:shadow-glow active:scale-[0.99] sm:p-6 lg:p-5 xl:p-6"
       style={{
         backgroundImage:
           'linear-gradient(130deg, #5C3078 0%, #7A44A0 55%, #8C5FA8 100%)',

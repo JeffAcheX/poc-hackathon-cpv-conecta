@@ -29,7 +29,10 @@ export function AppLayout() {
         <div className="relative flex min-w-0 flex-1 flex-col">
           <TopBar onMenu={() => setDrawerOpen(true)} />
           <div ref={scrollRef} className="no-scrollbar min-h-0 flex-1 overflow-y-auto">
-            <div className="aurora-light flex min-h-full flex-col">
+            <div
+              key={location.pathname}
+              className="aurora-light animate-page-in flex min-h-full flex-col"
+            >
               <Outlet context={ctx} />
             </div>
           </div>
